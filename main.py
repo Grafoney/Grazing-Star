@@ -6,46 +6,21 @@ import pyglet.window.key
 from pyglet import clock
 from random import randint
 
-
-class Character():
-    def ImageSource(self, *args):
-        ''' Load sprites '''
-        # Надо сделать так, чтобы ставилось столько спрайтов, сколько укажешь
-        image0 = pyglet.resource.image(args)
-        image1 = pyglet.resource.image(args)
-        sprites = [image0, image1]
-        return sprites
-
-    def Animation(self, sprites):
-        ''' Create animation '''
-        source = pyglet.image.Animation.from_image_sequence(sprites, 0.5, True)
-        sprite = pyglet.sprite.Sprite(source)
-        return sprite
+from animation import Animate
 
 
 # Set refresh rate
 clock.set_fps_limit(60)
 
 # Create and open a window
-window = pyglet.window.Window(caption='Pyglet test', width=480, height=640)
+window = pyglet.window.Window(caption='Grazing Star', width=480, height=640)
 
 # Make control
 key = pyglet.window.key
 keyboard = key.KeyStateHandler
 
-# Load sprites
-s0 = pyglet.resource.image('Images/hero.png')
-s1 = pyglet.resource.image('Images/hero2.png')
-sprites = [s0, s1]
-'''
-enemy0 = pyglet.resource.image('Images/enemy.png')
-enemy1 = pyglet.resource.image('Images/enemy2.png')
-enemySprites = [enemy0, enemy1]
-'''
-
-# Animation
-anim = pyglet.image.Animation.from_image_sequence(sprites, 0.5, True)
-sprite = pyglet.sprite.Sprite(anim)
+# Create player's sprite
+sprite = Animate().create_animated_sprite()
 
 # Start position of the sprites
 sprite.x, sprite.y = 0, 0
@@ -53,7 +28,7 @@ x_velocity, y_velocity = 0, 0
 
 
 def update_position(event):
-    ''' Set the new positions of the sprites '''
+    """Set the new positions of the sprites"""
     global x_velocity, y_velocity
 
     sprite.x += x_velocity
@@ -86,7 +61,7 @@ x_velEnemy, y_velEnemy = randint(-50, 50), randint(-50, 50)
 
 
 def update_enemy_position(event):
-    ''' Update enemy position and generate the new one'''
+    """Update enemy position and generate the new one"""
     global x_velEnemy, y_velEnemy
     # Check borders of screen for enemy
     if enemySprite.x <= 0:
@@ -111,7 +86,7 @@ def update_enemy_position(event):
 
 
 def check_collision(event):
-    '''Check collision between player and enemy'''
+    """Check collision between player and enemy"""
     if sprite.x == enemySprite.x and sprite.y == enemySprite.y:
         print("BANG!")
     # print("Checking...")
